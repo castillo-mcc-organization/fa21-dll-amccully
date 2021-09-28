@@ -6,6 +6,44 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class DoubleLinkedList<E> implements List {
+    Node<E> head;
+    public DoubleLinkedList(int i) {
+        if(i < 0 || i > size) {
+            throw new IndexOutOfBoundsException("Invalid index: " + i);
+        }
+    }
+
+    public String toString() {
+        Node<String> nodeRef = head;
+        String result = "";
+        while(nodeRef != null) {
+            result += nodeRef.data;
+            if(nodeRef.next != null) {
+                result += " ==> ";
+            }
+            nodeRef = nodeRef.next;
+        }
+        return result;
+    }
+    /*
+        add docs
+     */
+    private static class Node<E> {
+        private E data;
+        private Node<E> next = null;
+        private Node<E> prev = null;
+
+        private Node(E dataItem) {
+            data = dataItem;
+        }
+    }
+
+    /*
+        add docs
+     */
+    private class DoubleListIterator {
+
+    }
 
     @Override
     public int size() {

@@ -17,15 +17,15 @@ public class DoubleLinkedList<E> implements List<E> {
     @Override
     public String toString() {
         Node<E> nodeRef = head;
-        String result = "";
+        String result = "[";
         while(nodeRef != null) {
             result += nodeRef.data;
             if(nodeRef.next != null) {
-                result += " ==> ";
+                result += ", ";
             }
             nodeRef = nodeRef.next;
         }
-        return result;
+        return result + "]";
     }
     /*
         add docs
@@ -49,6 +49,9 @@ public class DoubleLinkedList<E> implements List<E> {
         private Node<E> lastItemReturned;
         private int index;
 
+        public DoubleListIterator() {
+            index = 0;
+        }
         public DoubleListIterator(int i) {
             if (i < 0 || i > size) {
                 throw new IndexOutOfBoundsException("Invalid index " + i);
@@ -212,7 +215,8 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public boolean add(E o) {
-        return false;
+        add(size, o);
+        return true; // should always be true unless some unexpected error, which would stop program at the line above
     }
 
     @Override
@@ -237,7 +241,7 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public E get(int i) {
-        return null;
+        return (E)listIterator(i).next();
     }
 
     @Override
@@ -267,12 +271,12 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public ListIterator listIterator() {
-        return null;
+        return new DoubleListIterator();
     }
 
     @Override
     public ListIterator listIterator(int i) {
-        return null;
+        return new DoubleListIterator(i);
     }
 
     @Override

@@ -45,13 +45,14 @@ public class DoubleLinkedList<E> implements List<E> {
         add docs
      */
     private class DoubleListIterator implements ListIterator<E> {
-        private Node<E> nextItem;
-        private Node<E> lastItemReturned;
+        private Node<E> nextItem = null;
+        private Node<E> lastItemReturned = null;
         private int index;
 
         public DoubleListIterator() {
             index = 0;
         }
+
         public DoubleListIterator(int i) {
             if (i < 0 || i > size) {
                 throw new IndexOutOfBoundsException("Invalid index " + i);
@@ -86,6 +87,9 @@ public class DoubleLinkedList<E> implements List<E> {
 
         @Override
         public boolean hasPrevious() {
+            if(size == 0) {
+                return false;
+            }
             return ((nextItem == null && size != 0) || nextItem.prev != null);
         }
 
@@ -106,10 +110,13 @@ public class DoubleLinkedList<E> implements List<E> {
 
         @Override
         public int nextIndex() {
-            if(hasNext()) {
-                return index;
-            }
-            return -1;
+            /*
+                if(hasNext()) {
+                    return index;
+                }
+                return -1;
+            */
+            return index;
         }
 
         @Override
@@ -154,7 +161,11 @@ public class DoubleLinkedList<E> implements List<E> {
 
         @Override
         public void set(E o) {
-
+            if(lastItemReturned == null) {
+                throw new IllegalStateException("No last element returned");
+            }
+            lastItemReturned.data = o;
+            lastItemReturned = null;
         }
 
         @Override
@@ -195,12 +206,33 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public boolean isEmpty() {
-        return (head == null);
+        return (head == null && size == 0);
     }
 
     @Override
     public boolean contains(Object o) {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        /*
+            if(o == null || !(o instanceof LinkedList)) {
+                return false;
+            }
+            LinkedList oListRef = (LinkedList)o;
+            if(this.size() != oListRef.size()) {
+                return false;
+            }
+            ListIterator oIterator = oListRef.listIterator();
+            ListIterator thisIterator = this.listIterator();
+            for(int i = 0; i < size; i++) {
+                if(!(oIterator.next().toString().equals(thisIterator.next().toString()))) {
+                    return false;
+                }
+            }
+        */
+        return true;
     }
 
     @Override
@@ -236,7 +268,8 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public void clear() {
-
+        head = null;
+        size = 0;
     }
 
     @Override
@@ -261,7 +294,13 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        ListIterator iteratorRef = listIterator();
+        while(iteratorRef.hasNext()) {
+            if(iteratorRef.next().equals(o)) {
+                return(iteratorRef.nextIndex());
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -303,4 +342,5 @@ public class DoubleLinkedList<E> implements List<E> {
     public Object[] toArray(Object[] objects) {
         return new Object[0];
     }
+
 }

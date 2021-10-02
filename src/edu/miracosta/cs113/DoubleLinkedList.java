@@ -45,11 +45,13 @@ public class DoubleLinkedList<E> implements List<E> {
         add docs
      */
     private class DoubleListIterator implements ListIterator<E> {
-        private Node<E> nextItem = null;
-        private Node<E> lastItemReturned = null;
+        private Node<E> nextItem;
+        private Node<E> lastItemReturned;
         private int index;
 
         public DoubleListIterator() {
+            lastItemReturned = null;
+            nextItem = head;
             index = 0;
         }
 
@@ -290,26 +292,29 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public E set(int i, E o) {
+
+        ListIterator iteratorRef = listIterator(i);
+        if(!iteratorRef.hasNext()) {
+            throw new IndexOutOfBoundsException();
+        }
+        E obj = (E)iteratorRef.next();
+        iteratorRef.set(o);
+        return obj;
         /*
-            ListIterator listRef = listIterator(i);
-            E obj = (E)listRef.next();
-            listRef.set(o);
-            return obj;
-        */
-            ListIterator listRef = listIterator(i);
+            ListIterator iteratorRef = listIterator(i);
             try {
                 E obj = (E)listRef.next();
-                listRef.set(o);
+                iteratorRef.set(o);
                 return obj;
             }
             catch(NoSuchElementException ne) {
                 throw new IndexOutOfBoundsException();
             }
-        /*
+            --------------------------------
             E obj = get(i);
-            ListIterator listRef = listIterator(i);
-            listRef.next();
-            listRef.set(o);
+            ListIterator iteratorRef = listIterator(i);
+            iteratorRef.next();
+            iteratorRef.set(o);
             return obj;
         */
     }

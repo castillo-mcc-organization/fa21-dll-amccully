@@ -274,12 +274,44 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public E get(int i) {
+        /*
+            try {
+                return (E) listIterator(i).next();
+            }
+            catch (NoSuchElementException ne) {
+                throw new IndexOutOfBoundsException();
+            }
+        */
+        if(i < 0 || i >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
         return (E)listIterator(i).next();
     }
 
     @Override
-    public Object set(int i, Object o) {
-        return null;
+    public E set(int i, E o) {
+        /*
+            ListIterator listRef = listIterator(i);
+            E obj = (E)listRef.next();
+            listRef.set(o);
+            return obj;
+        */
+            ListIterator listRef = listIterator(i);
+            try {
+                E obj = (E)listRef.next();
+                listRef.set(o);
+                return obj;
+            }
+            catch(NoSuchElementException ne) {
+                throw new IndexOutOfBoundsException();
+            }
+        /*
+            E obj = get(i);
+            ListIterator listRef = listIterator(i);
+            listRef.next();
+            listRef.set(o);
+            return obj;
+        */
     }
 
     @Override
@@ -296,8 +328,9 @@ public class DoubleLinkedList<E> implements List<E> {
     public int indexOf(Object o) {
         ListIterator iteratorRef = listIterator();
         while(iteratorRef.hasNext()) {
-            if(iteratorRef.next().equals(o)) {
-                return(iteratorRef.nextIndex());
+            int num = iteratorRef.nextIndex();
+            if(o.equals(iteratorRef.next())) {
+                return(num);
             }
         }
         return -1;

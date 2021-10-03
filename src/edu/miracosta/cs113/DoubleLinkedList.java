@@ -208,11 +208,14 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public boolean isEmpty() {
-        return (head == null && size == 0);
+        return (head == null && tail == null && size == 0);
     }
 
     @Override
     public boolean contains(Object o) {
+        if(indexOf(o) != -1) {
+            return true;
+        }
         return false;
     }
 
@@ -255,7 +258,14 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        int index = indexOf(o);
+        try {
+            remove(index);
+            return true;
+        }
+        catch(IndexOutOfBoundsException ioobe) {
+            return false;
+        }
     }
 
     @Override
@@ -271,6 +281,7 @@ public class DoubleLinkedList<E> implements List<E> {
     @Override
     public void clear() {
         head = null;
+        tail = null;
         size = 0;
     }
 
@@ -292,7 +303,6 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public E set(int i, E o) {
-
         ListIterator iteratorRef = listIterator(i);
         if(!iteratorRef.hasNext()) {
             throw new IndexOutOfBoundsException();
@@ -326,7 +336,13 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public E remove(int i) {
-        return null;
+        ListIterator iteratorRef = listIterator(i);
+        if(!iteratorRef.hasNext()) {
+            throw new IndexOutOfBoundsException();
+        }
+        E obj = (E)iteratorRef.next();
+        iteratorRef.remove();
+        return obj;
     }
 
     @Override
@@ -343,7 +359,15 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        ListIterator iteratorRef = listIterator();
+        int indexReturn = -1;
+        while(iteratorRef.hasNext()) {
+            int num = iteratorRef.nextIndex();
+            if(o.equals(iteratorRef.next())) {
+                indexReturn = num;
+            }
+        }
+        return indexReturn;
     }
 
     @Override

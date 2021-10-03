@@ -92,7 +92,7 @@ public class DoubleLinkedList<E> implements List<E> {
             if(size == 0) {
                 return false;
             }
-            return ((nextItem == null && size != 0) || nextItem.prev != null);
+            return (nextItem == null || nextItem.prev != null);
         }
 
         @Override
@@ -213,10 +213,7 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public boolean contains(Object o) {
-        if(indexOf(o) != -1) {
-            return true;
-        }
-        return false;
+        return (indexOf(o) != -1);
     }
 
     @Override

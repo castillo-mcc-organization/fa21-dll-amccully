@@ -37,7 +37,6 @@ public class DoubleLinkedList<E> implements List<E> {
 
         private Node(E dataItem) {
             data = dataItem;
-            ///
         }
     }
 
@@ -112,13 +111,7 @@ public class DoubleLinkedList<E> implements List<E> {
 
         @Override
         public int nextIndex() {
-            /*
-                if(hasNext()) {
-                    return index;
-                }
-                return -1;
-            */
-            return index;
+            return index;   // In case of index being size, it will return size of course. If less than 0 or greater than size, this method will never be called (constructor handles this)
         }
 
         @Override
@@ -157,7 +150,7 @@ public class DoubleLinkedList<E> implements List<E> {
                 lastItemReturned.next.prev = lastItemReturned.prev;
             }
             size--;
-            index--; //?
+            index--;    //?
             lastItemReturned = null;
         }
 
@@ -189,11 +182,11 @@ public class DoubleLinkedList<E> implements List<E> {
                 tail = nodeRef;
             }
             else {
-                Node<E> nodeRef = new Node<E>(o); //*
-                nodeRef.next = nextItem; //*
-                nodeRef.prev = nextItem.prev; //*
-                nextItem.prev.next = nodeRef; //*
-                nextItem.prev = nodeRef; //*
+                Node<E> nodeRef = new Node<E>(o);
+                nodeRef.next = nextItem;
+                nodeRef.prev = nextItem.prev;
+                nextItem.prev.next = nodeRef;
+                nextItem.prev = nodeRef;
             }
             size++;
             index++;
@@ -218,28 +211,26 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public boolean equals(Object o) {
-        /*
-            if(o == null || !(o instanceof LinkedList)) {
+        if(!(o instanceof LinkedList)) {
+            return false;
+        }
+        LinkedList oListRef = (LinkedList)o;
+        if(this.size() != oListRef.size()) {
+            return false;
+        }
+        ListIterator oIterator = oListRef.listIterator();
+        ListIterator thisIterator = this.listIterator();
+        for(int i = 0; i < size; i++) {
+            if(!(oIterator.next().equals(thisIterator.next()))) {
                 return false;
             }
-            LinkedList oListRef = (LinkedList)o;
-            if(this.size() != oListRef.size()) {
-                return false;
-            }
-            ListIterator oIterator = oListRef.listIterator();
-            ListIterator thisIterator = this.listIterator();
-            for(int i = 0; i < size; i++) {
-                if(!(oIterator.next().toString().equals(thisIterator.next().toString()))) {
-                    return false;
-                }
-            }
-        */
+        }
         return true;
     }
 
     @Override
     public Iterator iterator() {
-        return null;
+        return new DoubleListIterator();
     }
 
     @Override
@@ -284,14 +275,6 @@ public class DoubleLinkedList<E> implements List<E> {
 
     @Override
     public E get(int i) {
-        /*
-            try {
-                return (E) listIterator(i).next();
-            }
-            catch (NoSuchElementException ne) {
-                throw new IndexOutOfBoundsException();
-            }
-        */
         if(i < 0 || i >= size()) {
             throw new IndexOutOfBoundsException();
         }
@@ -307,23 +290,6 @@ public class DoubleLinkedList<E> implements List<E> {
         E obj = (E)iteratorRef.next();
         iteratorRef.set(o);
         return obj;
-        /*
-            ListIterator iteratorRef = listIterator(i);
-            try {
-                E obj = (E)listRef.next();
-                iteratorRef.set(o);
-                return obj;
-            }
-            catch(NoSuchElementException ne) {
-                throw new IndexOutOfBoundsException();
-            }
-            --------------------------------
-            E obj = get(i);
-            ListIterator iteratorRef = listIterator(i);
-            iteratorRef.next();
-            iteratorRef.set(o);
-            return obj;
-        */
     }
 
     @Override

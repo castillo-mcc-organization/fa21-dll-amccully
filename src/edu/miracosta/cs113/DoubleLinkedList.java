@@ -1,13 +1,23 @@
 package edu.miracosta.cs113;
-
 import java.util.*;
 
+/**
+ * DoubleLinkedList.java : A double linked list which implements list methods, contains nodes of generic type E
+ *
+ * @author      Aaron McCully <amccully2001@gmail.com>
+ * @version     1.0
+ *
+ * @param <E>   generic type of the data to be stored in nodes
+ */
 public class DoubleLinkedList<E> implements List<E> {
     // data fields
     private Node<E> head;
     private Node<E> tail;
     private int size;
 
+    /**
+     *  Default constructor that creates an empty DoubleLinkedList
+     */
     public DoubleLinkedList() {
         head = null;
         tail = null;
@@ -27,33 +37,47 @@ public class DoubleLinkedList<E> implements List<E> {
         }
         return result + "]";
     }
-    /*
-        add docs
+
+    /**
+     * An inner class for creating Nodes in the DoubleLinkedList which store data, a reference to the previous node, and a reference to the next node
+     * @param <E>   generic type of the data to be stored
      */
     private static class Node<E> {
         private E data;
         private Node<E> next = null;
         private Node<E> prev = null;
 
+        /**
+         * Constructor that creates a Node instance that has data stored
+         * @param dataItem  data passed to be stored in the new Node
+         */
         private Node(E dataItem) {
             data = dataItem;
         }
     }
 
-    /*
-        add docs
+    /**
+     * An inner class for creating a ListIterator which can traverse through the Nodes in DoubleLinkedList
      */
     private class DoubleListIterator implements ListIterator<E> {
+        // data fields
         private Node<E> nextItem;
         private Node<E> lastItemReturned;
         private int index;
 
+        /**
+         * Default constructor which sets up a list iterator at position 0
+         */
         public DoubleListIterator() {
             lastItemReturned = null;
             nextItem = head;
             index = 0;
         }
 
+        /**
+         * Constructor which sets up a list iterator at a specified position
+         * @param i     the index position that the iterator will begin at
+         */
         public DoubleListIterator(int i) {
             if (i < 0 || i > size) {
                 throw new IndexOutOfBoundsException("Invalid index " + i);
